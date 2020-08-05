@@ -10,6 +10,14 @@ from .models import Thread, ChatMessage
 class ChatConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         print("Connected ", event)
+        await self.send({
+            "type": "websocket.accept"
+        })
+
+        await self.send({
+            'type': 'websocket.send',
+            'text': 'Hello World'
+        })
 
     async def websocket_receive(self, event):
         print("Connected ", event)
