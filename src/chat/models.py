@@ -54,6 +54,9 @@ class Thread(models.Model):
             return True
         return False
 
+    def __str__(self):
+        return 'Thread of: ' + str(self.first) + ' and ' + str(self.second)
+
 
 class ChatMessage(models.Model):
     thread      = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL)
