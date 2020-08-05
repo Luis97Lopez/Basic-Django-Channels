@@ -25,7 +25,7 @@ class ChatConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        print("Connected ", event)
+        print("Received ", event)
 
     async def websocket_disconnect(self, event):
         print("Disconnected ", event)
