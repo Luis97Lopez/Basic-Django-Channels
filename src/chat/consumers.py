@@ -15,7 +15,10 @@ class ChatConsumer(AsyncConsumer):
         })
         other_user = self.scope['url_route']['kwargs']['username']
         me = self.scope['user']
-        print(other_user, me)
+
+        thread_obj = await self.get_thread(me, other_user)
+        print(thread_obj)
+
         await self.send({
             'type': 'websocket.send',
             'text': 'Hello World'
@@ -26,3 +29,8 @@ class ChatConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         print("Disconnected ", event)
+
+    # Esto funciona para no saturar la base de datos
+    @database_sync_to_async
+    def get_thread(self, user, other_username):
+        return Thread.objects.get_or_new(user, other_username)[0]
