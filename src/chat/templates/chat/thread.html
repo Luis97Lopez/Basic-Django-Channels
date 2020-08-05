@@ -29,7 +29,7 @@ if(loc.protocol == 'https:'){
 }
 
 let endpoint =  wsStart + loc.host + loc.pathname
-let socket = new WebSocket(endpoint)
+let socket = new ReconnectingWebSocket(endpoint)
 
 socket.onmessage = function (e){
     console.log("message", e)
