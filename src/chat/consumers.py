@@ -19,21 +19,23 @@ class ChatConsumer(AsyncConsumer):
         thread_obj = await self.get_thread(me, other_user)
         print(thread_obj)
 
-        await self.send({
-            'type': 'websocket.send',
-            'text': 'Hello World'
-        })
-
     async def websocket_receive(self, event):
         print("Received ", event)
         front_text = event.get('text', None)
         if front_text is not None:
             loaded_data = json.loads(front_text)
             msg = loaded_data.get('message')
-            print(msg)
+            user = self.scope['user']
+            username = user.username
+
+            my_response = {
+                'message': msg,
+                'username': username
+            }
+
             await self.send({
                 'type': 'websocket.send',
-                'text': msg
+                'text': json.dumps(my_response)
             })
 
     async def websocket_disconnect(self, event):

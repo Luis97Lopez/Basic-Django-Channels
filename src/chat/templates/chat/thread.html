@@ -24,6 +24,7 @@
 let loc = window.location
 let formData = $("#form")
 let msgInput = $("#id_message")
+let chatHolder = $("#chat-items")
 
 let wsStart = 'ws://'
 if(loc.protocol === 'https:'){
@@ -37,13 +38,15 @@ let socket = new ReconnectingWebSocket(endpoint)
 
 socket.onmessage = function (e){
     console.log("message", e)
+    let chatDataMsg = JSON.parse(e.data)
+    chatHolder.append("<li>" + chatDataMsg.message + " via "+ chatDataMsg.username + "</li>")
 }
+
 socket.onopen = function (e){
     console.log("open", e)
     formData.submit(function (event){
         event.preventDefault()
         let msgText = msgInput.val()
-
         let finalData = {
             'message': msgText
         }
